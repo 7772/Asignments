@@ -7,8 +7,7 @@
 
 int getHowManyNumber(char *fileName); // Get How many numbers in input file.
 int *readFile(int n, char *fileName); // Read the input file.
-void merge(int *values, int *L, int leftCount, int *R, int rightCount); // Function to Merge Arrays L and R into A. 
-void mergeSortFunc(int *values, int n); // Recursive function to sort an array of integers.
+void insertionSort(int *values, int n); // Insertion Sort Func.
 
 int main(int argc, char* argv[]) {
 
@@ -40,7 +39,7 @@ int main(int argc, char* argv[]) {
 
         values = readFile(n, fileName); // Read the input file.
 
-        mergeSortFunc(values, n); // Recursive function to sort an array of integers.
+        insertionSort(values, n);
 
         for(int j=0; j<n; j++) {
             printf("%d \n", values[j]);
@@ -95,7 +94,7 @@ int *readFile(int n, char *fileName) {
 
     int i = 0;
 
-    FILE *fp = fopen(fileName, "rt");
+    FILE *fp = fopen(fileName, "rt"); // "rt" is 
 
     if(fp == NULL) {
         printf("Error! File Open Failure..");
@@ -111,9 +110,7 @@ int *readFile(int n, char *fileName) {
         fgets(buffer, sizeof(buffer), fp);
         int length = strlen(buffer);
         if(length > 1) {
-            // printf("%s", buffer);
             values[i] = atoi(buffer);
-            // printf("%d", values[i]);
             i++;
         }
     }
@@ -122,53 +119,16 @@ int *readFile(int n, char *fileName) {
     return values;
 }
 
-// Function to Merge Arrays L and R into A. 
-void merge(int *values, int *L, int leftCount, int *R, int rightCount) {
-    int i,j,k;
+void insertionSort(int *values, int n) {
+    int i, j, temp;
 
-	// i - to mark the index of left aubarray (L)
-	// j - to mark the index of right sub-raay (R)
-	// k - to mark the index of merged subarray (values)
-	i = 0; j = 0; k =0;
-
-    while(i < leftCount && j < rightCount) {
-		if(L[i] > R[j]) {
-            values[k++] = L[i++];
+    for(i=1; i<n; i++) {
+        temp = values[i];
+        j = i - 1;
+        while(j >= 0 && values[j] < temp) {
+            values[j+1] = values[j];
+            j = j - 1;
         }
-		else {
-            values[k++] = R[j++];
-        }
-	}
-    
-	while(i < leftCount) {
-        values[k++] = L[i++];
+        values[j+1] = temp;
     }
-
-	while(j < rightCount) {
-        values[k++] = R[j++];
-    }
-}
-
-// Sorting Function
-// Parameter : length, arr
-void mergeSortFunc(int *values, int n) {
-    int mid, i, *L, *R;
-
-    if(n < 2) {
-        return;
-    }
-
-    mid = n/2;
-
-    L = (int*)malloc(mid*sizeof(int)); 
-	R = (int*)malloc((n- mid)*sizeof(int)); 
-	
-	for(i = 0;i<mid;i++) L[i] = values[i]; // creating left subarray
-	for(i = mid;i<n;i++) R[i-mid] = values[i]; // creating right subarray
-
-	mergeSortFunc(L, mid);  // sorting the left subarray
-	mergeSortFunc(R, n-mid);  // sorting the right subarray
-	merge(values, L, mid, R, n-mid);  // Merging L and R into values as sorted list.
-    free(L);
-    free(R);
 }
