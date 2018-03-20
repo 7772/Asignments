@@ -7,13 +7,13 @@
 
 int getNum(char *fileName); // Get How many numbers in input file.
 void readFile(int *values, int n, char *fileName); // Read the input file.
-void insertionSort(int *values, int n); // Insertion Sort Func.
+void selectionSort(int *values, int n); // Selection Sort Func.
 
 int main(int argc, char* argv[]) {
 
     clock_t start;
     start = clock();
-    int counter = 0;
+    double counter = 0;
     double elapsedTime, timeForTask;
 
     int n, k, j, *values; // n : first parameter, k : The number of numbers in input file, values : array
@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
         fputs("Error! You should input number and fileName..\n", stderr);
         return -1;
     }
-    
+
     n = atoi(argv[1]); // Changed the first command line parameter from char to int.
     fileName = argv[2]; 
     k = getNum(fileName); // Get How many numbers in input file.
@@ -37,10 +37,10 @@ int main(int argc, char* argv[]) {
     values = (int*)malloc(sizeof(int)*n);
 
     readFile(values, n, fileName); // Read the input file.
-    
+
     do {
         counter++;
-        insertionSort(values, n);
+        selectionSort(values, n);
     } while(clock() - start < 1000);
 
     for(j=0; j<n; j++) {
@@ -94,7 +94,7 @@ void readFile(int *values, int n, char *fileName) {
 
     int i = 0;
 
-    FILE *fp = fopen(fileName, "rt"); // "rt" is 
+    FILE *fp = fopen(fileName, "rt"); 
 
     if(fp == NULL) {
         printf("Error! File Open Failure..");
@@ -115,16 +115,27 @@ void readFile(int *values, int n, char *fileName) {
     fclose(fp);
 }
 
-void insertionSort(int *values, int n) {
-    int i, j, temp;
+void selectionSort(int *values, int n) {
+    int i, j, indexMin, temp;
 
-    for(i=1; i<n; i++) {
-        temp = values[i];
-        j = i - 1;
-        while(j >= 0 && values[j] < temp) {
-            values[j+1] = values[j];
-            j = j - 1;
+    // loop through all numbers 
+    for(i = 0; i < n-1; i++) { 
+
+        // set current element as minimum 
+        indexMin = i;
+        
+        // check the element to be minimum 
+        for(j=i+1; j<n; j++) {
+            if(values[j] > values[indexMin]) {
+                indexMin = j;
+            }
         }
-        values[j+1] = temp;
+
+        if(indexMin != i) {
+            // swap the numbers 
+            temp = values[indexMin];
+            values[indexMin] = values[i];
+            values[i] = temp;
+        }          
     }
 }
