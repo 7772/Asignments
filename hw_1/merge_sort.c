@@ -85,6 +85,7 @@ int getNum(char* fileName) {
         cnt = 1000000;
     }
 
+    fclose(fp);
     return cnt;
 }
 
