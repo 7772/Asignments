@@ -1,0 +1,17 @@
+## Algorithm Asignment
+
+### Sorting input.txt by using Merge, Insertion, and Selection sort.
+---
+
+###### How to implement server
+> $ ssh -p 7722 20145810@nsl2.cau.ac.kr
+
+##### How to copy somethig
+> $ scp -P 7722 ~/path/to/{your file or directory} 20145810@nsl2.cau.ac.kr:~/submit_alg/submit_20145810_hw1
+- 포트 번호 변경 시 -P 대문자 사용해야 함.
+- 원격서버내 다른 경로는 권한이 없음. submit_20145810_hw1 으로만 파일 이동이 가능함.
+
+##### How to compile
+> $ gcc -o {fileName} {fileName.c}
+
+
