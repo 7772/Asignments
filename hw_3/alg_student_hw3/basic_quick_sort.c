@@ -14,11 +14,22 @@
 
 #include <time.h>
 
-void readFile(int *values, int n, char *fileName);
+void readFile(int *data, int n, char *fileName);
 
-void choose_pivot (int *data, unsigned int n) {
+void swap(int * a, int * b) {
+    int tmp=*a;
+    *a=*b;
+    *b=tmp;
+};
+
+void choose_pivot (int * data, unsigned int n) {
+
+    srand ( time(NULL) ); //initialize the random seed
 	
 	/* your code here */
+    int randomIdx = rand() % n; //generates a random number between 0 and 3
+
+    swap(&data[0], &data[randomIdx]);
 	
 }
 
@@ -26,12 +37,24 @@ unsigned long quick_sort (int *data, unsigned int n) {
     unsigned long cnt = (n - 1); // number of comparisons
 
 	/* your code here */
+	choose_pivot(data, n);
 
-	
-    // choose pivot and  always place it at first element of array
-    choose_pivot(data, n);
+    int p=1, q=cnt;
+ 
+    while(1){
+        while(data[p]<=data[0]){ p++; }
+        while(data[q]>data[0]){ q--; }
+ 
+        if(p>q) break;
+ 
+        swap(&data[p], &data[q]);
+    }
+ 
+    swap(&data[0], &data[q]);
+ 
+    quick_sort(data, q-1);
+    quick_sort(data, cnt);
 
-	
 	/* your code here */
 
 	
@@ -47,7 +70,7 @@ int main (int argc, char* argv[]) {
     double counter = 0;
     double elapsedTime, timeForTask;
 
-	int n, k, j, *values; // n : first parameter, k : The number of numbers in input file, values : array
+	int n, k, j, *data; // n : first parameter, k : The number of numbers in input file, data : array
     char *fileName; // fileName : second parameter, That is, Input File name.
 
 
@@ -66,10 +89,11 @@ int main (int argc, char* argv[]) {
 	
 	fileName = argv[1]; 
     // k = getNum(fileName); // Get How many numbers in input file.
-	values = (int*)malloc(sizeof(int)*n);
-	readFile(values, n, fileName);
+	data = (int*)malloc(sizeof(int)*n);
+	readFile(data, n, fileName);
 
 	/* your code here */
+	quick_sort(data, n);
 
 
 	/* your code here */
@@ -84,15 +108,15 @@ int main (int argc, char* argv[]) {
 	/* your code here */
 	
 
-	// free values
-	free(values);	
+	// free data
+	free(data);	
     return 0;
 }
 
 // File I/O
 // Parameter : Array, Number to read, Filename
 // Return : Number Array 
-void readFile(int *values, int n, char *fileName) {
+void readFile(int *data, int n, char *fileName) {
 
     int i = 0;
 
@@ -110,8 +134,8 @@ void readFile(int *values, int n, char *fileName) {
         int length = strlen(buffer);
         if(length > 1) {
             // printf("%s", buffer);
-            values[i] = atoi(buffer);
-            // printf("%d \n", values[i]);
+            data[i] = atoi(buffer);
+            // printf("%d \n", data[i]);
             i++;
         }
     }
